@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('brand', 128);
             $table->double('price');
             $table->string('dimension', 128);
+            $table->string('image_url', 255);
             
             $table->unsignedBigInteger('type_id');
             $table->foreign('type_id')->references('id')->on('types');
