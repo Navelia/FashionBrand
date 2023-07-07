@@ -14,7 +14,8 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        $data = Transaction::all();
+        return view('admin.transaction.index', compact('data'));
     }
 
     /**
@@ -46,7 +47,8 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        //
+        $data = $transaction;
+        return view('admin.transaction.detail', compact('data'));
     }
 
     /**

@@ -6,14 +6,16 @@
     <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.ico') }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-    <title>Light Bootstrap Dashboard by Creative Tim</title>
+    <title>Fashion Brand</title>
 
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
 
 
     <!-- Bootstrap core CSS     -->
+    <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/boxicons.min.css') }}"rel="stylesheet">
 
     <!-- Animation library for notifications   -->
     <link href="{{ asset('assets/css/animate.min.css') }}" rel="stylesheet" />
