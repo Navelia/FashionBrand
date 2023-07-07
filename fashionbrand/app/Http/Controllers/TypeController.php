@@ -15,7 +15,7 @@ class TypeController extends Controller
     public function index()
     {
         $data = Type::all();
-        return view('type.index', ['data' => $data]);
+        return view('admin.type.index', ['data' => $data]);
     }
 
     /**
@@ -25,7 +25,7 @@ class TypeController extends Controller
      */
     public function create()
     {
-        return view('type.create');
+        return view('admin.type.create');
     }
 
     /**
@@ -36,6 +36,10 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(['name' => 'required', 'description' => 'required'], ['name.required' => 'Nama tipe tidak boleh kosong.', 'description.required' => 'Deskripsi tipe tidak boleh kosong']);
+        $data = new Type();
+        $data->name = $request->get('name');
+        $data->description = $request->get('description');
         return redirect()->route('type.index')->with('status', 'Berhasil menambahkan data baru.');
     }
 
@@ -58,7 +62,8 @@ class TypeController extends Controller
      */
     public function edit(Type $type)
     {
-        return view('type.edit', compact('data'));
+        $data = $type;
+        return view('admin.type.edit', compact('data'));
     }
 
     /**
@@ -68,8 +73,12 @@ class TypeController extends Controller
      * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Type $type)
     {
+        $request->validate(['description'=>'required'],['description.required'=>'Deskripsi tipe tidak boleh kosong.']);
+        $type->description = $request->get('description');
+        $type->save();
+        
         return redirect()->route('type.index')->with('status', 'Tipe produk berhasil diubah.');
     }
 
@@ -79,13 +88,11 @@ class TypeController extends Controller
      * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Type $type)
     {
         try {
-            $objType = Type::find($id);
-            $objType->delete();
+            $type->delete();
             return redirect()->route('type.index')->with('status', 'Data berhasil dihapus.');
-            // dd($objCategory);
         } catch (\PDOException $ex) {
             $msg = "Gagal untuk menghapus data, pastikan data yang dihapus tidak berelasi dengan data dari kolom lain.";
             return redirect()->route('type.index')->with('status', $msg);

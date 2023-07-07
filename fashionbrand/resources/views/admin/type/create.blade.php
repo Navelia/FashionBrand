@@ -1,8 +1,7 @@
 @extends('layoutAdmin.layoutAdmin')
 @section('content')
-    <h2>Tambah Kategori Baru</h2>
-    {{-- <form method="POST" action="{{ route('category.store', $data->id) }}"> --}}
-    <form method="POST" action="">
+    <h2>Tambah Tipe Baru</h2>
+    <form method="POST" action="{{ route('type.store') }}">
         @csrf
         <div class="container-fluid">
             <div class="row">
@@ -13,9 +12,13 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <h5>Nama Kategori</h5>
-                                            <input type="text" name="namecategory" id="nameCategory" class="form-control"
-                                                placeholder="Tuliskan nama kategori disini">
+                                            <h5>Nama Tipe</h5>
+                                            <input type="text" name="name" id="txtName" class="form-control"
+                                                placeholder="Tuliskan nama tipe disini" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <h5>Deskripsi</h5>
+                                            <textarea name="description" id="txtDescription" class="form-control" placeholder="Tuliskan deskripsi tipe disini" required></textarea>
                                         </div>
                                     </div>
                                 </div>
