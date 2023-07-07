@@ -4,13 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     public function type(){
         return $this->belongsTo(Type::class, 'type_id');
+    }
+    public function typewithTrashed(){
+        return $this->belongsTo(Type::class, 'type_id')->withTrashed();
     }
     public function categories(){
         return $this->belongsToMany(Category::class, 'categories_products', 'product_id', 'category_id');
