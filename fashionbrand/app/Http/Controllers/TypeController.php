@@ -36,11 +36,13 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required', 'description' => 'required'], ['name.required' => 'Nama tipe tidak boleh kosong.', 'description.required' => 'Deskripsi tipe tidak boleh kosong']);
+        $request->validate(['name'=>'required','description'=>'required','unit'=>'required'],['name.required'=>'Nama tipe tidak boleh kosong','description.required'=>'Deskripsi tipe tidak boleh kosong.', 'unit.required'=>'Unit tidak boleh kosong.']);
         $data = new Type();
         $data->name = $request->get('name');
         $data->description = $request->get('description');
+        $data->unit = $request->get('unit');
         $data->save();
+
         return redirect()->route('type.index')->with('status', 'Berhasil menambahkan data baru.');
     }
 
@@ -76,8 +78,9 @@ class TypeController extends Controller
      */
     public function update(Request $request, Type $type)
     {
-        $request->validate(['description'=>'required'],['description.required'=>'Deskripsi tipe tidak boleh kosong.']);
+        $request->validate(['description'=>'required','unit'=>'required'],['description.required'=>'Deskripsi tipe tidak boleh kosong.', 'unit.required'=>'Unit tidak boleh kosong.']);
         $type->description = $request->get('description');
+        $type->unit = $request->get('unit');
         $type->save();
 
         return redirect()->route('type.index')->with('status', 'Tipe produk berhasil diubah.');

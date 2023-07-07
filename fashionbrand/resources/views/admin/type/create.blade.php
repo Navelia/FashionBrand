@@ -17,12 +17,20 @@
                                                 placeholder="Tuliskan nama tipe disini" required>
                                         </div>
                                         <div class="form-group">
+                                            <h5>Unit Tipe</h5>
+                                            <select name="unit" id="cbUnit" class="form-control" required>
+                                                <option value="pcs">Piece</option>
+                                                <option value="gr">Gram</option>
+                                                <option value="mL">Mililiter</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
                                             <h5>Deskripsi</h5>
                                             <textarea name="description" id="txtDescription" class="form-control" placeholder="Tuliskan deskripsi tipe disini" required></textarea>
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-info btn-fill pull-right">Tambah Kategori</button>
+                                <button type="submit" class="btn btn-info btn-fill pull-right">Tambah Tipe</button>
                                 <div class="clearfix"></div>
                             </form>
                         </div>
