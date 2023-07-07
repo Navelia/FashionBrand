@@ -13,6 +13,7 @@
 
 
     <!-- Bootstrap core CSS     -->
+    <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" />
 
     <!-- Animation library for notifications   -->
