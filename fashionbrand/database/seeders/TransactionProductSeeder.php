@@ -18,6 +18,7 @@ class TransactionProductSeeder extends Seeder
             'transaction_id'=>1,
             'product_id'=>1,
             'price'=>599000,
+            'dimension'=>'l',
             'quantity'=>1,
             'sub_total'=>599000,
         ]);
@@ -25,6 +26,7 @@ class TransactionProductSeeder extends Seeder
             'transaction_id'=>1,
             'product_id'=>2,
             'price'=>299000,
+            'dimension'=>'xl',
             'quantity'=>1,
             'sub_total'=>299000,
         ]);

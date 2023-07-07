@@ -1,6 +1,6 @@
 @extends('layoutAdmin.layoutAdmin')
 @section('content')
-    <a href="{{ route('transaction.index') }}" class="btn btn-fill btn-info">Kembali</a>
+    <a href="{{ route('transaction.index') }}"><i class='bx bx-left-arrow-alt'></i> Kembali</a>
     <h2>Detail Transaksimu</h2>
     <div class="container-fluid">
         <div class="row">
