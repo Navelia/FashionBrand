@@ -14,8 +14,8 @@ class AddAddressPhoneNumberColumnCustomers extends Migration
     public function up()
     {
         Schema::table('customers', function (Blueprint $table){
-            $table->string('address');
-            $table->string('phone_number');
+            $table->string('address', 255)->after('points');
+            $table->string('phone_number', 20)->after('address');
         });
     }
 
