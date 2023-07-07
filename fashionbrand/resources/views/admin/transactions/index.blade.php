@@ -1,6 +1,6 @@
 @extends('layoutAdmin.layoutAdmin')
 @section('content')
-    <h2>Kategori Anda</h2>
+    <h2>Kategorimu</h2>
 
     <a href="{{ route('category.create') }}" class="btn btn-success"> + Tambah Kategori</a>
     @if (session('status'))

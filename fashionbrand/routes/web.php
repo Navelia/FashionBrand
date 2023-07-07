@@ -25,3 +25,6 @@ Route::resource('admin/category', CategoryController::class);
 Route::resource('admin/type', TypeController::class);
 Route::resource('admin/product', ProductController::class);
 Route::resource('admin/transaction', TransactionController::class);
+
+Route::post('/admin/product/getunit', [ProductController::class, 'getUnit'])
+        ->name('product.getUnit');

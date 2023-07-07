@@ -34,6 +34,7 @@ class TypeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    
     public function store(Request $request)
     {
         $request->validate(['name'=>'required','description'=>'required','unit'=>'required'],['name.required'=>'Nama tipe tidak boleh kosong','description.required'=>'Deskripsi tipe tidak boleh kosong.', 'unit.required'=>'Unit tidak boleh kosong.']);

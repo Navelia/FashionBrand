@@ -68,8 +68,8 @@
                             <p>Types</p>
                         </a>
                     </li>
-                    <li>
-                        <a href="table.html">
+                    <li class="{{ request()->is('admin/product') ? ' active' : '' }}">
+                        <a href="{{ route('product.index') }}">
                             <i class="pe-7s-note2"></i>
                             <p>Products</p>
                         </a>

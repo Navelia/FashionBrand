@@ -36,6 +36,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(['namecategory'=>'required'], ['namecategory.required'=>'Nama kategori tidak boleh kosong.']);
         $data = new Category();
         $data->name = $request->get('namecategory');
         $data->save();
@@ -85,7 +86,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         try {
-            $category->products()->detach();
             $category->delete();
             return redirect()->route('category.index')->with('status', 'Data berhasil dihapus');
         } catch (\PDOException $ex) {
