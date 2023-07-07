@@ -40,6 +40,7 @@ class TypeController extends Controller
         $data = new Type();
         $data->name = $request->get('name');
         $data->description = $request->get('description');
+        $data->save();
         return redirect()->route('type.index')->with('status', 'Berhasil menambahkan data baru.');
     }
 
@@ -78,7 +79,7 @@ class TypeController extends Controller
         $request->validate(['description'=>'required'],['description.required'=>'Deskripsi tipe tidak boleh kosong.']);
         $type->description = $request->get('description');
         $type->save();
-        
+
         return redirect()->route('type.index')->with('status', 'Tipe produk berhasil diubah.');
     }
 
