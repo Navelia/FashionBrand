@@ -14,7 +14,8 @@ class TypeController extends Controller
      */
     public function index()
     {
-        //
+        $data = Type::all();
+        return view('type.index', ['data' => $data]);
     }
 
     /**
@@ -24,7 +25,7 @@ class TypeController extends Controller
      */
     public function create()
     {
-        //
+        return view('type.create');
     }
 
     /**
@@ -35,7 +36,7 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return redirect()->route('type.index')->with('status', 'Data berhasil ditambahkan.');
     }
 
     /**
@@ -57,7 +58,7 @@ class TypeController extends Controller
      */
     public function edit(Type $type)
     {
-        //
+        return view('type.edit', compact('data'));
     }
 
     /**
@@ -67,9 +68,9 @@ class TypeController extends Controller
      * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Type $type)
+    public function update(Request $request, $id)
     {
-        //
+        return redirect()->route('type.index')->with('status', 'Tipe produk berhasil diubah.');
     }
 
     /**
@@ -78,8 +79,16 @@ class TypeController extends Controller
      * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Type $type)
+    public function destroy($id)
     {
-        //
+        try {
+            $objType = Type::find($id);
+            $objType->delete();
+            return redirect()->route('type.index')->with('status', 'Data berhasil dihapus.');
+            // dd($objCategory);
+        } catch (\PDOException $ex) {
+            $msg = "Gagal untuk menghapus data, pastikan data yang dihapus tidak berelasi dengan data dari kolom lain.";
+            return redirect()->route('type.index')->with('status', $msg);
+        }
     }
 }

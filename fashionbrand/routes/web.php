@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('admin.category.index');
+    return view('welcome');
 });
+
+Route::resource('admin/category', CategoryController::class);
+Route::resource('admin/type', TypeController::class);

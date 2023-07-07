@@ -14,7 +14,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $data = Category::all();
+        return view('admin.category.index', ['data' => $data]);
     }
 
     /**
@@ -24,7 +25,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('category.create');
     }
 
     /**
@@ -35,7 +36,10 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new Category();
+        $data->name = $request->get('namecategory');
+        $data->save();
+        return redirect()->route('category.index')->with('status', 'Successfully insert your new data.');
     }
 
     /**
@@ -80,6 +84,13 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        try {
+            $category->products()->detach();
+            $category->delete();
+            return redirect()->route('category.index')->with('status', 'Successfully delete data');
+        } catch (\PDOException $ex) {
+            $msg = "Failed to delete data. Make sure your data is not related to other column before you delete it";
+            return redirect()->route('category.index')->with('status', $msg);
+        }
     }
 }
