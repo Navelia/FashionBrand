@@ -1,8 +1,7 @@
 @extends('layoutAdmin.layoutAdmin')
 @section('content')
     <h2>Tambah Kategori Baru</h2>
-    {{-- <form method="POST" action="{{ route('category.store', $data->id) }}"> --}}
-    <form method="POST" action="">
+    <form method="POST" action="{{ route('category.store') }}">
         @csrf
         <div class="container-fluid">
             <div class="row">

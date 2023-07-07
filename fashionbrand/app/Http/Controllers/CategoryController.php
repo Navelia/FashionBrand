@@ -25,7 +25,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('category.create');
+        return view('admin.category.create');
     }
 
     /**
@@ -39,7 +39,7 @@ class CategoryController extends Controller
         $data = new Category();
         $data->name = $request->get('namecategory');
         $data->save();
-        return redirect()->route('category.index')->with('status', 'Successfully insert your new data.');
+        return redirect()->route('category.index')->with('status', 'Berhasil menambahkan data baru.');
     }
 
     /**
@@ -87,9 +87,9 @@ class CategoryController extends Controller
         try {
             $category->products()->detach();
             $category->delete();
-            return redirect()->route('category.index')->with('status', 'Successfully delete data');
+            return redirect()->route('category.index')->with('status', 'Data berhasil dihapus');
         } catch (\PDOException $ex) {
-            $msg = "Failed to delete data. Make sure your data is not related to other column before you delete it";
+            $msg = "Gagal untuk menghapus data, pastikan data yang dihapus tidak berelasi dengan data dari kolom lain.";
             return redirect()->route('category.index')->with('status', $msg);
         }
     }

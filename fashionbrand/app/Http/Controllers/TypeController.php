@@ -36,7 +36,7 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
-        return redirect()->route('type.index')->with('status', 'Data berhasil ditambahkan.');
+        return redirect()->route('type.index')->with('status', 'Berhasil menambahkan data baru.');
     }
 
     /**
