@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TypeController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,4 @@ Route::get('/', function () {
 
 Route::resource('admin/category', CategoryController::class);
 Route::resource('admin/type', TypeController::class);
+Route::resource('admin/transaction', TransactionController::class);
