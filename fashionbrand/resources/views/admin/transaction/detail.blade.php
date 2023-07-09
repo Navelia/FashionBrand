@@ -9,8 +9,6 @@
                     <div class="content">
                         <h3 class="mt-1 mb-1"><strong>Transaction ID: {{ $data->id }}</strong></h3>
                         <hr>
-                        <h5 class="mb-1">Total Transaksi: <strong>Rp{{ number_format($data->total, 2, ',', '.') }}</strong>
-                        </h5>
                         <h5 class="mb-1">Pembeli: <strong>{{ $data->customer->user->name }}</strong></h5>
                         @if ($data->staff != null)
                             <h5 class="mt-0 mb-0">Kasir: <strong>{{ $data->staff->name }}</strong></h5>
@@ -43,7 +41,7 @@
                         </table>
                         <h6 class="text-right">Grand Total: Rp{{ number_format($data->grand_total, 2, ',', '.') }}</h6>
                         <h6 class="text-right">Pajak (PPn 11%): Rp{{ number_format($data->tax, 2, ',', '.') }}</h6>
-                        @if ($data->points_histories == null)
+                        @if (count($data->points_histories) == 0)
                             <h6 class="text-right">Perolehan Poin: 0</h6>
                             <h6 class="text-right">Penggunaan Poin: 0</h6>
                         @else
@@ -55,6 +53,8 @@
                                 @endif
                             @endforeach
                         @endif
+                        <h6 class="text-right">Total Transaksi: Rp{{ number_format($data->total, 2, ',', '.') }}
+                        </h6>
                     </div>
                 </div>
             </div>
