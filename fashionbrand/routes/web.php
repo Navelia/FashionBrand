@@ -28,3 +28,5 @@ Route::resource('admin/transaction', TransactionController::class);
 
 Route::post('/admin/product/getunit', [ProductController::class, 'getUnit'])->name('product.getUnit');
 Route::post('/admin/product/getdimension', [ProductController::class, 'getDimension'])->name('product.getDimension');
+Route::put('/admin/product/updatestock/{product}', [ProductController::class, 'addStock'])->name('product.updateStock');
+Route::get('/admin/product/showaddstock/{product}', [ProductController::class, 'showAddStock'])->name('product.showAddStock');

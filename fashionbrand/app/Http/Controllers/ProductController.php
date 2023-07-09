@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Type;
+use App\Models\Variant;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -62,28 +63,22 @@ class ProductController extends Controller
         $data = new Product();
         $data->name = $request->get('nameproduct');
         $data->brand = $request->get('brandproduct');
-        $data->stock = 0;
         $data->price = $request->get('priceproduct');
 
-        $unitSize = "";
-
-        $typeUnit = Type::select('unit')->where('id', $request->get('typesproduct'))->get();
-
-        if ($typeUnit[0]['unit'] == 'pcs') {
-            $arrSize = $request->get('dimensionproduct');
-            foreach ($arrSize as $size) {
-                $unitSize .= $size . ",";
-            }
-            $unitSize = rtrim($unitSize, ',');
-        } else {
-            $unitSize = $request->get('dimensionproduct');
-        }
-
-        $data->dimension = $unitSize;
         $data->image_url = 'products/' . $imgName;
 
         $data->type_id = $request->get('typesproduct');
         $data->save();
+        $data->id;
+
+        $prodDim = $request->get('dimensionproduct');
+        foreach ($prodDim as $dim) {
+            $variant = new Variant();
+            $variant->product_id = $data->id;
+            $variant->dimension = $dim;
+            $variant->stock = 0;
+            $variant->save();
+        }
 
         $categoryArr = $request->get('categoryproduct');
         foreach ($categoryArr as $cat) {
@@ -113,7 +108,17 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $types = Type::all();
-        return view('admin.product.edit', compact('product', 'categories', 'types'));
+        $proCat = [];
+        $proDim = [];
+        foreach ($product->categories as $cat) {
+            $proCat[] = $cat->id;
+        }
+
+        foreach ($product->variants as $var) {
+            $proDim[] = $var->dimension;
+        }
+
+        return view('admin.product.edit', compact('product', 'categories', 'types', 'proCat', 'proDim'));
     }
 
     /**
@@ -130,16 +135,12 @@ class ProductController extends Controller
                 'nameproduct' => 'required',
                 'brandproduct' => 'required',
                 'priceproduct' => 'required|numeric',
-                'urlproduct' => 'mimes:jpg,png|required|file'
             ],
             ['nameproduct.required' => 'Nama produk tidak boleh kosong.'],
             ['brandproduct.required' => 'Brand produk tidak boleh kosong.'],
             ['priceproduct.required' => 'Harga produk tidak boleh kosong.', 'priceproduct.numeric' => 'Harga produk harus ditulis nominalnya dalam angka.'],
-            ['urlproduct.required' => 'Upload gambar produk.'],
-            ['urlproduct.mimes:jpg,png' => 'Format gambar yang diterima hanya .jpg dan .png.'],
         );
 
-        $product = new Product();
         $product->categories()->detach();
         $product->name = $request->get('nameproduct');
         $product->brand = $request->get('brandproduct');
@@ -147,34 +148,55 @@ class ProductController extends Controller
 
         $unitSize = "";
 
-        $typeUnit = Type::select('unit')->where('id', $request->get('typesproduct'))->get();
-        if ($typeUnit[0]['unit'] == 'pcs') {
-            $arrSize = $request->get('dimensionproduct');
-            foreach ($arrSize as $size) {
-                $unitSize .= $size . ",";
-            }
-            $unitSize = rtrim($unitSize, ',');
-        } else {
-            $unitSize = $request->get('dimensionproduct');
+        $dimProduct = Variant::select('dimension')->where('product_id', $request->get('idProduct'))->get();
+        $dimProductVars = $dimProduct;
+        $arrDimPro = [];
+
+        foreach ($dimProductVars as $dp) {
+            $arrDimPro[] = $dp->dimension;
         }
 
-        $product->dimension = $unitSize;
+        $prodDim = $request->get('dimensionproduct');
+        if ($product->type->unit == 'pcs') {
+            foreach ($arrDimPro as $dbdim) {
+                if (in_array($dbdim, $prodDim) == false) {
+                    $variant = Variant::where('product_id', $request->get('idProduct'))->where('dimension', $dbdim)->first();
+                    $variant->delete();
+                }
+            }
 
-        $file = $request->file('urlproduct');
-        $imgFolder = 'products';
-        $imgName = $request->get('nameproduct') . '.' . $file->getClientOriginalExtension();
-        $file->move($imgFolder, $imgName);
+            foreach ($prodDim as $dim) {
+                if (in_array($dim, $arrDimPro) == false) {
+                    $variant = new Variant();
+                    $variant->product_id = $product->id;
+                    $variant->dimension = $dim;
+                    $variant->stock = 0;
+                    $variant->save();
+                }
+            }
+        }
+        else{
+            $variantNotPcs = Variant::where('product_id', $request->get('idProduct'))->first();
+            $variantNotPcs->dimension = $prodDim[0];
+            $variantNotPcs->save();
+        }
 
-        $product->image_url = 'products/' . $imgName;
+        if ($request->file('urlproduct')) {
+            $file = $request->file('urlproduct');
+            $imgFolder = 'products';
+            $imgName = $request->get('nameproduct') . '.' . $file->getClientOriginalExtension();
+            $file->move($imgFolder, $imgName);
 
-        $product->type_id = $request->get('typesproduct');
+            $product->image_url = 'products/' . $imgName;
+        }
+
         $product->save();
 
         $categoryArr = $request->get('categoryproduct');
         foreach ($categoryArr as $cat) {
             $product->categories()->attach($cat);
         }
-        return redirect()->route('products.index')->with('status', 'Data produk berhasil diubah.');
+        return redirect()->route('product.index')->with('status', 'Data produk berhasil diubah.');
     }
 
     /**
@@ -195,8 +217,23 @@ class ProductController extends Controller
         }
     }
 
-    public function updateStock(Product $product)
+
+    public function showAddStock(Product $product)
     {
+        $variants = Variant::where('product_id', $product->id)->get();
+        return view('admin.product.addstock', compact('variants', 'product'));
+    }
+
+    public function addStock(Request $request, Variant $variant)
+    {
+        $varId = $request->get('variantssproduct');
+        $variant = Variant::find($varId);
+
+        $stockBaru = $variant->stock + $request->get('stockproduct');
+        $variant->stock =  $stockBaru;
+        $variant->save();
+        
+        return redirect()->route('product.index')->with('status', 'Berhasil tambah stok untuk '.$variant->product->name.'.');
     }
 
     public function getUnit(Request $request)
@@ -207,11 +244,12 @@ class ProductController extends Controller
         ));
     }
 
-    public function getDimension(Request $request){
+    public function getDimension(Request $request)
+    {
         $idProduct = $request->get('idProduct');
         $productDimension = Product::select('dimension')->where('id', $idProduct)->get();
-        $dimensions = explode(",",$productDimension[0]['dimension']);
+        $dimensions = explode(",", $productDimension[0]['dimension']);
 
-        return response()->json(array('status'=>'ok','msg'=>view('admin.product.dimensionoptions', compact('dimensions'))->render()));
+        return response()->json(array('status' => 'ok', 'msg' => view('admin.product.dimensionoptions', compact('dimensions'))->render()));
     }
 }
