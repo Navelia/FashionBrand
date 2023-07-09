@@ -1,7 +1,9 @@
 @extends('layoutAdmin.layoutAdmin')
 @section('content')
     <h2>Transaksimu</h2>
+    @can('owner')
     <a href="{{ route('transaction.create') }}" class="btn btn-success"> + Tambah Transaksi</a>
+    @endcan
     @if (session('status'))
         <div class='alert alert-success'>{{ session('status') }}</div>
     @endif

@@ -74,17 +74,32 @@
                             <p>Products</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="{{ request()->is('admin/transaction') ? ' active' : '' }}">
                         <a href="{{ route('transaction.index') }}">
                             <i class="pe-7s-news-paper"></i>
                             <p>Transactions</p>
                         </a>
                     </li>
-                    <li class="active-pro">
-                        <a href="upgrade.html">
-                            <i class="pe-7s-rocket"></i>
-                            <p>Logout</p>
+                    <li class="{{ request()->is('admin/customer') ? ' active' : '' }}">
+                        <a href="{{ route('customer.index') }}">
+                            <i class="bx bx-id-card"></i>
+                            <p>Customers</p>
                         </a>
+                    </li>
+                    <li class="{{ request()->is('admin/report') ? ' active' : '' }}">
+                        <a href="{{ route('transaction.report') }}">
+                            <i class="bx bx-id-card"></i>
+                            <p>Report</p>
+                        </a>
+                    </li>
+                    <li class="active-pro">
+                        <form action="{{ route('logout') }}" method="post">
+                            @csrf
+                            <button type="submit" class="btn" style="color: white">
+                                <i class="pe-7s-rocket"></i>
+                                <p>Logout</p>
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </div>

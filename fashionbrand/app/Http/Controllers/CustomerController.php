@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -14,7 +15,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        $customers = Customer::all();
+        return view('admin.customer.index', compact('customers'));
     }
 
     /**
@@ -24,7 +26,8 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('owner');
+        return view('admin.customer.add');
     }
 
     /**
@@ -80,6 +83,15 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        $this->authorize('owner');
+        try {
+            $user = User::find($customer->user_id);
+            $customer->delete();
+            $user->delete();
+            return redirect()->route('customer.index')->with('status', 'Data berhasil dihapus');
+        } catch (\PDOException $ex) {
+            $msg = "Gagal untuk menghapus data, pastikan data yang dihapus tidak berelasi dengan data dari kolom lain.";
+            return redirect()->route('customer.index')->with('status', $msg);
+        }
     }
 }

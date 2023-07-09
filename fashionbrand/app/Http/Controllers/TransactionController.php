@@ -8,6 +8,8 @@ use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\Variant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
@@ -29,6 +31,7 @@ class TransactionController extends Controller
      */
     public function create()
     {
+        $this->authorize('owner');
         $customers = Customer::all();
         $products = Product::orderBy('name')->get();
 
@@ -43,6 +46,7 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('owner', $request);
         $pelanggan = $request->get('namePelanggan');
         $variants = $request->get('varianProduk');
         $jmlhs = $request->get('jmlhProduk');
@@ -68,7 +72,7 @@ class TransactionController extends Controller
         $transaction->tax = $tax;
         $transaction->total = $total;
         $transaction->customer_id = $pelanggan;
-        $transaction->staff_id = 2; //Auth Belum
+        $transaction->staff_id = Auth()->user->id;
         $transaction->created_at = date('Y-m-d H:i:s');
         $transaction->save();
 
@@ -157,5 +161,11 @@ class TransactionController extends Controller
     public function destroy(Transaction $transaction)
     {
         //
+    }
+
+    public function reporting(){
+        // 3 Varian yang paling laku dibeli
+        $query = DB::select(DB::raw('select p.name, v.dimension, sum(tv.quantity) as \'total_quantity\' from transactions_variants tv inner join variants v on v.id=tv.variant_id inner join products p on p.id=v.product_id group by variant_id order by total_quantity desc limit 3;'));
+        return view('admin.transaction.report', compact('query'));
     }
 }
