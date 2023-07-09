@@ -19,7 +19,7 @@
                                         <div class="form-group">
                                             <h5>Unit Tipe</h5>
                                             <select name="unit" id="cbUnit" class="form-control" required>
-                                                <option value="pcs">Piece</option>
+                                                <option value="pcs">Pcs</option>
                                                 <option value="gr">Gram</option>
                                                 <option value="mL">Mililiter</option>
                                             </select>

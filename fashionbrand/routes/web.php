@@ -26,5 +26,5 @@ Route::resource('admin/type', TypeController::class);
 Route::resource('admin/product', ProductController::class);
 Route::resource('admin/transaction', TransactionController::class);
 
-Route::post('/admin/product/getunit', [ProductController::class, 'getUnit'])
-        ->name('product.getUnit');
+Route::post('/admin/product/getunit', [ProductController::class, 'getUnit'])->name('product.getUnit');
+Route::post('/admin/product/getdimension', [ProductController::class, 'getDimension'])->name('product.getDimension');

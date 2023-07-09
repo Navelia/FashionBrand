@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
-use App\Models\Product;
-use App\Models\Transaction;
 use Illuminate\Http\Request;
 
-class TransactionController extends Controller
+class VariantController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +13,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $data = Transaction::all();
-        return view('admin.transaction.index', compact('data'));
+        //
     }
 
     /**
@@ -27,10 +23,7 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        $customers = Customer::all();
-        $products = Product::orderBy('name')->get();
-        
-        return view('admin.transaction.create', compact('customers', 'products'));
+        //
     }
 
     /**
@@ -47,22 +40,21 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Transaction  $transaction
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Transaction $transaction)
+    public function show($id)
     {
-        $data = $transaction;
-        return view('admin.transaction.detail', compact('data'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Transaction  $transaction
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Transaction $transaction)
+    public function edit($id)
     {
         //
     }
@@ -71,10 +63,10 @@ class TransactionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Transaction  $transaction
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transaction $transaction)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -82,10 +74,10 @@ class TransactionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Transaction  $transaction
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transaction $transaction)
+    public function destroy($id)
     {
         //
     }

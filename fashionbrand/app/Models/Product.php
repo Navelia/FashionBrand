@@ -22,8 +22,7 @@ class Product extends Model
     public function categorieswithTrashed(){
         return $this->belongsToMany(Category::class, 'categories_products', 'product_id', 'category_id')->withTrashed();
     }
-    public function transactions(){
-        return $this->belongsToMany(Transaction::class, 'transactions_products', 'transaction_id', 'product_id')->withPivot('price', 'quantity', 'sub_total');
+    public function variants(){
+        return $this->hasMany(Variant::class, 'product_id', 'id');
     }
-    
 }

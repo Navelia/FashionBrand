@@ -17,9 +17,7 @@ class ProductSeeder extends Seeder
         DB::table('products')->insert([
             'name'=>'Jaket Parka Saku Proteksi Sinar UV Potongan 3D (Water-Repellent)',
             'brand'=>'Unik-lo',
-            'stock'=>95,
             'price'=>599000,
-            'dimension'=>'s,m,l,xl',
             'image_url'=>'products/uniklo-parka-abu.png',
             'type_id'=>2,
             'created_at'=>date('Y-m-d H:i:s'),
@@ -28,9 +26,7 @@ class ProductSeeder extends Seeder
         DB::table('products')->insert([
             'name'=>'Sweater Sulaman Slogan Basic',
             'brand'=>'Push&Bear',
-            'stock'=>65,
             'price'=>299000,
-            'dimension'=>'s,m,l,xl',
             'image_url'=>'products/push-n-bear-sulaman-slogan.jpg',
             'type_id'=>1,
             'created_at'=>date('Y-m-d H:i:s'),
@@ -39,9 +35,7 @@ class ProductSeeder extends Seeder
         DB::table('products')->insert([
             'name'=>'Easy Care Textured Shirt',
             'brand'=>'Zala',
-            'stock'=>85,
             'price'=>225000,
-            'dimension'=>'m,l,xl,xxl',
             'image_url'=>'products/zala-shirt-easy.jpg',
             'type_id'=>2,
             'created_at'=>date('Y-m-d H:i:s'),

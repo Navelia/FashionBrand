@@ -206,4 +206,12 @@ class ProductController extends Controller
             'msg' => $typeUnit[0]['unit']
         ));
     }
+
+    public function getDimension(Request $request){
+        $idProduct = $request->get('idProduct');
+        $productDimension = Product::select('dimension')->where('id', $idProduct)->get();
+        $dimensions = explode(",",$productDimension[0]['dimension']);
+
+        return response()->json(array('status'=>'ok','msg'=>view('admin.product.dimensionoptions', compact('dimensions'))->render()));
+    }
 }

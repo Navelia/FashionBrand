@@ -102,7 +102,7 @@
                         &copy;
                         <script>
                             document.write(new Date().getFullYear())
-                        </script> Ncent, Gede, made with
+                        </script> Ncent & Gede, made with
                         love for an A score
                     </p>
                 </div>

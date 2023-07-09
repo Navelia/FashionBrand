@@ -18,7 +18,7 @@ class Transaction extends Model
     public function points_histories(){
         return $this->hasMany(PointsHistory::class, 'transaction_id', 'id');
     }
-    public function products(){
-        return $this->belongsToMany(Product::class, 'transactions_products', 'product_id', 'transaction_id')->withPivot('price', 'quantity', 'sub_total');
+    public function variants(){
+        return $this->belongsToMany(Variant::class, 'transactions_products', 'variant_id', 'transaction_id')->withPivot('price', 'quantity', 'sub_total');
     }
 }
