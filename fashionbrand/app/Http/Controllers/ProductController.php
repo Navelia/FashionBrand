@@ -251,5 +251,11 @@ class ProductController extends Controller
         $dimensions = explode(",",$productDimension[0]['dimension']);
 
         return response()->json(array('status' => 'ok', 'msg' => view('admin.product.dimensionoptions', compact('dimensions'))->render()));
+    }    
+
+    public function displayCatalog()
+    {
+        $data = Product::all();
+        return view('customer.catalog', compact('data'));
     }
 }

@@ -18,10 +18,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
 Route::middleware(['auth'])->group(function () {
     Route::middleware(['can:staff'])->group(function () {
         Route::resource('admin/category', CategoryController::class);
@@ -43,3 +39,6 @@ Route::get('/admin/product/showaddstock/{product}', [ProductController::class, '
 });
 
 Auth::routes();
+
+Route::get('/', [ProductController::class, 'displayCatalog'])->name('customer.catalog');
+
