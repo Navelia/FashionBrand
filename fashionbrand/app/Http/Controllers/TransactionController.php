@@ -202,7 +202,7 @@ class TransactionController extends Controller
         }
 
         if ($request->get('tukar')=='ya' && $grandtotal>100000) {
-            $poin = Customer::select('points')->where('id', Auth::user()->id)->get()[0]['points'];
+            $poin = Customer::select('points')->where('id', Auth::user()->customer->id)->get()[0]['points'];
             $grandtotal -= ($poin * 1000);
         }
 
@@ -230,12 +230,12 @@ class TransactionController extends Controller
             $pointHis = new PointsHistory();
             $pointHis->date = date('Y-m-d H:i:s');
             $pointHis->type = 'out';
-            $amount = Customer::select('points')->where('id', Auth::user()->id)->get()[0]['points'];
+            $amount = Customer::select('points')->where('id', Auth::user()->customer->id)->get()[0]['points'];
             $pointHis->amount = $amount;
             $pointHis->transaction_id = $transaction->id;
             $pointHis->save();
 
-            $dataCust = Customer::find(Auth::user()->id);
+            $dataCust = Customer::find(Auth::user()->customer->id);
             $dataCust->points = $dataCust->points - $amount * 1;
             $dataCust->save();
         }
@@ -249,11 +249,11 @@ class TransactionController extends Controller
             $pointHis->transaction_id = $transaction->id;
             $pointHis->save();
 
-            $dataCust = Customer::find(Auth::user()->id);
+            $dataCust = Customer::find(Auth::user()->customer->id);
             $dataCust->points = $dataCust->points + $pointIn * 1;
             $dataCust->save();
         }
-
+        session()->forget('cart');
         return redirect()->route('customer.profile')->with("status", "Transaksi telah Berhasil");
     }
     public function custDetail(Transaction $transaction){

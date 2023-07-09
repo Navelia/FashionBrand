@@ -85,7 +85,7 @@
             <div class='alert alert-success'>{{ session('status') }}</div>
         @endif
         @if (session('cart'))
-            <form action="#" method="POST">
+            <form action="{{ route('transaction.checkout') }}" method="POST">
                 <div class="row mb-4">
                     <div class="col-12">
                         @csrf

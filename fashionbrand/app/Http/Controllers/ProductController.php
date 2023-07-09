@@ -247,8 +247,8 @@ class ProductController extends Controller
     public function getDimension(Request $request)
     {
         $idProduct = $request->get('idProduct');
-        $productDimension = Product::select('dimension')->where('id', $idProduct)->get();
-        $dimensions = explode(",",$productDimension[0]['dimension']);
+        $productDimension = Variant::where('product_id', $idProduct)->get();
+        $dimensions = $productDimension;
 
         return response()->json(array('status' => 'ok', 'msg' => view('admin.product.dimensionoptions', compact('dimensions'))->render()));
     }    

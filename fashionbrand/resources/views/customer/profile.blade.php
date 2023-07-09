@@ -82,6 +82,9 @@
     </nav>
 
     <div class="container catalog-container">
+        @if (session('status'))
+            <div class='alert alert-success'>{{ session('status') }}</div>
+        @endif
         <div class="row mb-4">
             <div class="col-12">
                 <h2>Hi, {{ Auth::user()->name }}!</h2>

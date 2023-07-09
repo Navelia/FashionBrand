@@ -86,8 +86,8 @@
         @endif
         <div class="row mb-4">
             @foreach ($data as $d)
-                <div class="col-md-3">
-                    <div class="card mb-5 mt-5">
+                <div class="col-md-3 mb-5">
+                    <div class="card">
                         <img src="{{ $d->image_url }}" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title">{{ $d->name }}</h5>
