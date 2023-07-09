@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
@@ -93,5 +95,10 @@ class CustomerController extends Controller
             $msg = "Gagal untuk menghapus data, pastikan data yang dihapus tidak berelasi dengan data dari kolom lain.";
             return redirect()->route('customer.index')->with('status', $msg);
         }
+    }
+
+    public function profile(){
+        $transactions = Transaction::where('customer_id', Auth::user()->customer->id)->get();
+        return view('customer.profile', compact('transactions'));
     }
 }

@@ -69,3 +69,46 @@
         </div>
     </form>
 @endsection
+
+@section('javascript')
+    <script>
+        $(document).ready(function() {
+            $('#selectedType').change(function() {
+                var idType = $('#selectedType').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('product.getUnit') }}',
+                    data: {
+                        '_token': '<?php echo csrf_token(); ?>',
+                        'idType': idType,
+                    },
+                    success: function(data) {
+                        $('#inputUnit').html('');
+                        if (data.msg != 'null') {
+                            var unit = data.msg;
+                            if (unit == "pcs") {
+                                $('#inputUnit').html(
+                                    "<p>Pilih size yang tersedia untuk produk ini</p>" +
+                                    "<div class='row'>" +
+                                    "<div class='col-md-2'><input type='checkbox'name='dimensionproduct[]' value='xs'> XS</div>" +
+                                    "<div class='col-md-2'><input type='checkbox'name='dimensionproduct[]' value='s'> S</div>" +
+                                    "<div class='col-md-2'><input type='checkbox'name='dimensionproduct[]' value='m'> M</div>" +
+                                    "<div class='col-md-2'><input type='checkbox'name='dimensionproduct[]' value='l'> L</div>" +
+                                    "<div class='col-md-2'><input type='checkbox'name='dimensionproduct[]' value='xl'> XL</div>" +
+                                    "<div class='col-md-2'><input type='checkbox'name='dimensionproduct[]' value='xxl'> XXL</div>" +
+                                    "</div>"
+                                );
+                            } else if (unit == 'gr' || unit == 'mL') {
+                                $('#inputUnit').html(
+                                    "<input type='number'name='dimensionproduct' min=0 class='form-control' required placeholder='tuliskan ukuran produk disini'><label>" +
+                                    unit + "</label>"
+                                )
+                            }
+                        }
+                    }
+                })
+            });
+        });
+    </script>
+@endsection

@@ -63,7 +63,8 @@
                         <a class="nav-link" href="{{ route('transaction.cart') }}">Shopping Cart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('customer.profile') }}">Customer: {{ Auth::user()->name }}</a>
+                        <a class="nav-link" href="{{ route('customer.profile') }}">Customer:
+                            {{ Auth::user()->name }}</a>
                     </li>
                     <li class="nav-item">
                         <form action="{{ route('logout') }}" method="post">
@@ -81,33 +82,54 @@
     </nav>
 
     <div class="container catalog-container">
-        @if (session('status'))
-            <div class='alert alert-success'>{{ session('status') }}</div>
-        @endif
         <div class="row mb-4">
-            @foreach ($data as $d)
-                <div class="col-md-3">
-                    <div class="card mb-5 mt-5">
-                        <img src="{{ $d->image_url }}" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $d->name }}</h5>
-                            <p class="card-text">Rp{{ number_format($d->price, 2, ',', '.') }}</p>
-                            <form action="{{ route('transaction.addtocart') }}" method="post">
-                                @csrf
-                                <select name="variant" id="cbVariants" class="form-control">
-                                    @foreach ($d->variants as $var)
-                                        <option value="{{ $var->id }}">{{ strtoupper($var->dimension) }}</option>
-                                    @endforeach
-                                </select>
-                        </div>
-                        <input type="hidden" name="idProduk" value="{{ $d->id }}">
-                        <button type="submit" class="btn btn-primary btn-bottom-right"><i
-                                class="fas fa-shopping-cart mr-2"></i>Add to
-                            Cart</button>
-                        </form>
-                    </div>
-                </div>
-            @endforeach
+            <div class="col-12">
+                <h2>Detail Transaksi No.{{ $transaction->id }}</h2>
+                @if ($transaction->staff != null)
+                    <h5 class="mt-0 mb-0">Kasir: <strong>{{ $transaction->staff->name }}</strong></h5>
+                @else
+                    <h5 class="mt-0 mb-0">Kasir: <strong>Transaksi Online</strong></h5>
+                @endif
+                <h6>Detail Barang</h6>
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nama Barang</th>
+                            <th>Dimensi</th>
+                            <th>Harga Beli</th>
+                            <th>Jumlah</th>
+                            <th>Sub Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($transaction->variants as $var)
+                            <tr>
+                                <td>{{ $var->product->name }}</td>
+                                <td>{{ strtoupper($var->dimension) }}</td>
+                                <td>Rp{{ number_format($var->pivot->price, 2, ',', '.') }}</td>
+                                <td>{{ $var->pivot->quantity }}</td>
+                                <td>Rp{{ number_format($var->pivot->sub_total, 2, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <h6 class="text-right">Grand Total: Rp{{ number_format($transaction->grand_total, 2, ',', '.') }}</h6>
+                <h6 class="text-right">Pajak (PPn 11%): Rp{{ number_format($transaction->tax, 2, ',', '.') }}</h6>
+                @if (count($transaction->points_histories) == 0)
+                    <h6 class="text-right">Perolehan Poin: 0</h6>
+                    <h6 class="text-right">Penggunaan Poin: 0</h6>
+                @else
+                    @foreach ($transaction->points_histories as $point)
+                        @if ($point->type == 'in')
+                            <h6 class="text-right">Perolehan Poin: {{ $point->amount }}</h6>
+                        @else
+                            <h6 class="text-right">Penggunaan Poin: {{ $point->amount }}</h6>
+                        @endif
+                    @endforeach
+                @endif
+                <h6 class="text-right">Total Transaksi: Rp{{ number_format($transaction->total, 2, ',', '.') }}
+                </h6>
+            </div>
         </div>
     </div>
 

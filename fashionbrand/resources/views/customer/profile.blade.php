@@ -63,7 +63,8 @@
                         <a class="nav-link" href="{{ route('transaction.cart') }}">Shopping Cart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('customer.profile') }}">Customer: {{ Auth::user()->name }}</a>
+                        <a class="nav-link" href="{{ route('customer.profile') }}">Customer:
+                            {{ Auth::user()->name }}</a>
                     </li>
                     <li class="nav-item">
                         <form action="{{ route('logout') }}" method="post">
@@ -81,33 +82,46 @@
     </nav>
 
     <div class="container catalog-container">
-        @if (session('status'))
-            <div class='alert alert-success'>{{ session('status') }}</div>
-        @endif
         <div class="row mb-4">
-            @foreach ($data as $d)
-                <div class="col-md-3">
-                    <div class="card mb-5 mt-5">
-                        <img src="{{ $d->image_url }}" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $d->name }}</h5>
-                            <p class="card-text">Rp{{ number_format($d->price, 2, ',', '.') }}</p>
-                            <form action="{{ route('transaction.addtocart') }}" method="post">
-                                @csrf
-                                <select name="variant" id="cbVariants" class="form-control">
-                                    @foreach ($d->variants as $var)
-                                        <option value="{{ $var->id }}">{{ strtoupper($var->dimension) }}</option>
-                                    @endforeach
-                                </select>
-                        </div>
-                        <input type="hidden" name="idProduk" value="{{ $d->id }}">
-                        <button type="submit" class="btn btn-primary btn-bottom-right"><i
-                                class="fas fa-shopping-cart mr-2"></i>Add to
-                            Cart</button>
-                        </form>
-                    </div>
-                </div>
-            @endforeach
+            <div class="col-12">
+                <h2>Hi, {{ Auth::user()->name }}!</h2>
+                <p class="mb-1">Alamat</p>
+                <p class="mb-1"><strong>{{ Auth::user()->customer->address }}</strong></p>
+                <br>
+                <p class="mb-1">Nomor Telepon</p>
+                <p class="mb-1"><strong>{{ Auth::user()->customer->phone_number }}</strong></p>
+                <br>
+                <p class="mb-1">Poin dimiliki: {{ Auth::user()->customer->points }}</p>
+
+                <h5>Riwayat Transaksi</h5>
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th>No Transaksi</th>
+                            <th>Tanggal Transaksi</th>
+                            <th>Total Transaksi</th>
+                            <th>Lokasi Transaksi</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($transactions as $d)
+                            <tr>
+                                <td class="text-center">{{ $d->id }}</td>
+                                <td>{{ $d->created_at }}</td>
+                                <td>Rp{{ number_format($d->total, 2, ',', '.') }}</td>
+                                @if ($d->staff != null)
+                                    <td>Toko</td>
+                                @else
+                                    <td>Online</td>
+                                @endif
+                                <td class="text-center"><a href="{{ route('transaction.custDetail', $d->id) }}"
+                                        class="btn btn-fill btn-info">Detail Transaksi</a></td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

@@ -36,7 +36,7 @@ class LoginController extends Controller
             return '/admin/category';
         }
         else if($role=='customer'){
-            return '/customer';
+            return '/';
         }
     }
 

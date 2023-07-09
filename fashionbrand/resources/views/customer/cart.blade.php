@@ -84,31 +84,60 @@
         @if (session('status'))
             <div class='alert alert-success'>{{ session('status') }}</div>
         @endif
-        <div class="row mb-4">
-            @foreach ($data as $d)
-                <div class="col-md-3">
-                    <div class="card mb-5 mt-5">
-                        <img src="{{ $d->image_url }}" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $d->name }}</h5>
-                            <p class="card-text">Rp{{ number_format($d->price, 2, ',', '.') }}</p>
-                            <form action="{{ route('transaction.addtocart') }}" method="post">
-                                @csrf
-                                <select name="variant" id="cbVariants" class="form-control">
-                                    @foreach ($d->variants as $var)
-                                        <option value="{{ $var->id }}">{{ strtoupper($var->dimension) }}</option>
-                                    @endforeach
-                                </select>
+        @if (session('cart'))
+            <form action="#" method="POST">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        @csrf
+                        <h3>Poin dimiliki: {{ Auth::user()->customer->points }}</h3>
+                        @if (Auth::user()->customer->points > 0)
+                            <h6>Apakah anda ingin menukar poin? (1 Poin = Rp1.000)</h6>
+                            <p class="mb-0">(Apabila transaksi < Rp100.000 maka poin otomatis tidak dapat digunakan.)</p>
+                                    <input type="radio" name="tukar" value="ya">Ya&nbsp;
+                                    <input type="radio" name="tukar" value="tidak" checked>Tidak
+                        @endif
+                        <table class="table table-bordered mt-3">
+                            <thead>
+                                <tr>
+                                    <th>Nama Produk</th>
+                                    <th>Harga</th>
+                                    <th>Jumlah</th>
+                                    <th>Sub Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $total=0;?>
+                                @foreach (session('cart') as $id => $details)
+                                    <tr>
+                                        <?php $total+= ($details['price'] * $details['quantity']);?>
+                                        <td>{{ $details['name'] }} ({{ strtoupper($details['dimension']) }})</td>
+                                        <td>Rp{{ number_format($details['price'], 2, ',', '.') }}</td>
+                                        <td>{{ $details['quantity'] }}</td>
+                                        <td>Rp{{ number_format($details['price'] * $details['quantity'], 2, ',', '.') }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <p>Total adalah sebelum dikurangkan dengan poin (apabila terdapat penukaran)</p>
+                                <p class="mb-0">Grand Total: <strong>Rp{{ number_format($total,2,',','.') }}</strong></p>
+                                <p class="mb-0">Pajak: <strong>Rp{{ number_format($total*0.11,2,',','.') }}</strong></p>
+                                <p>Total: <strong>Rp{{ number_format($total*1.11,2,',','.') }}</strong></p>
+                            </div>
+                            <div class="col-6 text-right">
+                                <button type="submit" class="btn btn-info">Checkout</button>
+                            </div>
                         </div>
-                        <input type="hidden" name="idProduk" value="{{ $d->id }}">
-                        <button type="submit" class="btn btn-primary btn-bottom-right"><i
-                                class="fas fa-shopping-cart mr-2"></i>Add to
-                            Cart</button>
-                        </form>
                     </div>
                 </div>
-            @endforeach
-        </div>
+            </form>
+        @else
+            <div class="row mb-4">
+                <h2>Tidak ada Barang di Cart</h2>
+            </div>
+        @endif
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

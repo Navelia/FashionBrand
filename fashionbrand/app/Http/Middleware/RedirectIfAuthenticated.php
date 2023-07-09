@@ -28,7 +28,7 @@ class RedirectIfAuthenticated
                 } else if ($role == 'owner') {
                     return redirect('/admin/category');
                 } else if ($role == 'customer') {
-                    return redirect('/customer');
+                    return redirect('/');
                 };
             }
         }
