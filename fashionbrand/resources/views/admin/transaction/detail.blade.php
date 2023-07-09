@@ -23,18 +23,20 @@
                             <thead>
                                 <tr>
                                     <th>Nama Barang</th>
+                                    <th>Dimensi</th>
                                     <th>Harga Beli</th>
                                     <th>Jumlah</th>
                                     <th>Sub Total</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data->products as $pro)
+                                @foreach ($data->variants as $var)
                                     <tr>
-                                        <td>{{ $pro->name }}</td>
-                                        <td>Rp{{ number_format($pro->pivot->price, 2, ',', '.') }}</td>
-                                        <td>{{ $pro->pivot->quantity }}</td>
-                                        <td>Rp{{ number_format($pro->pivot->sub_total, 2, ',', '.') }}</td>
+                                        <td>{{ $var->product->name }}</td>
+                                        <td>{{ $var->dimension }}</td>
+                                        <td>Rp{{ number_format($var->pivot->price, 2, ',', '.') }}</td>
+                                        <td>{{ $var->pivot->quantity }}</td>
+                                        <td>Rp{{ number_format($var->pivot->sub_total, 2, ',', '.') }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
