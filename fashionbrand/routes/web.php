@@ -34,6 +34,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/product/getdimension', [ProductController::class, 'getDimension'])->name('product.getDimension');
 
         Route::get('/admin/report', [TransactionController::class,'reporting'])->name('transaction.report');
+        Route::put('/admin/product/updatestock/{product}', [ProductController::class, 'addStock'])->name('product.updateStock');
+Route::get('/admin/product/showaddstock/{product}', [ProductController::class, 'showAddStock'])->name('product.showAddStock');
     });
     Route::middleware(['can:owner'])->group(function () {
         Route::post('/admin/customer/addcustomer', [UserController::class, 'addCustomer'])->name('user.addCustomer');
@@ -41,4 +43,3 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Auth::routes();
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

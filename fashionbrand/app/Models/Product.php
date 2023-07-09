@@ -25,4 +25,7 @@ class Product extends Model
     public function variants(){
         return $this->hasMany(Variant::class, 'product_id', 'id');
     }
+    public function variantswithTrashed(){
+        return $this->hasMany(Variant::class, 'product_id', 'id');
+    }
 }

@@ -1,6 +1,6 @@
 @extends('layoutAdmin.layoutAdmin')
 @section('content')
-    <h2>Tambah Kategori Baru</h2>
+    <h2>Ubah Data Tipe Produk</h2>
     <form method="POST" action="{{ route('type.update', $data->id) }}">
         @csrf
         @method('PUT')
@@ -9,7 +9,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="header">
-                            <h4 class="title">Ubah Tipe</h4>
+                            <h4 class="title">Ubah Data Tipe</h4>
                         </div>
                         <div class="content">
                             <form>
@@ -55,7 +55,7 @@
                                     </div>
                                 </div>
 
-                                <button type="submit" class="btn btn-info btn-fill pull-right">Update Profile</button>
+                                <button type="submit" class="btn btn-info btn-fill pull-right">Simpan</button>
                                 <div class="clearfix"></div>
                             </form>
                         </div>

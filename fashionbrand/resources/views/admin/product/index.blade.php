@@ -21,7 +21,7 @@
                                 <th class="text-center">Tipe Produk</th>
                                 <th class="text-center">Brand</th>
                                 <th class="text-center">Harga</th>
-                                <th class="text-center">Ukuran</th>
+                                <th class="text-center">Varian & Stok</th>
                                 <th class="text-center">Aksi</th>
                             </thead>
                             <tbody>
@@ -31,7 +31,8 @@
                                         <td>{{ $d->name }}</td>
                                         <td>
                                             <div>
-                                                <img class="img-fluid mb-3" src="{{ asset($d->image_url) }}" style="max-height:150px"/>
+                                                <img class="img-fluid mb-3" src="{{ asset($d->image_url) }}"
+                                                    style="max-height:150px" />
                                             </div>
                                         </td>
                                         <td>
@@ -43,9 +44,18 @@
                                         </td>
                                         <td>{{ $d->typewithTrashed->name }} </td>
                                         <td>{{ $d->brand }}</td>
-                                        <td>Rp{{ number_format($d->price,2,',','.') }}</td>
-                                        <td>{{ $d->dimension }}</td>
+                                        <td>Rp{{ number_format($d->price, 2, ',', '.') }}</td>
                                         <td>
+                                            <ul>
+                                                @foreach ($d->variantswithTrashed as $variant)
+                                                    <li> {{ $variant->dimension }} = {{ $variant->stock }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </td>
+
+                                        <td>
+                                            <a href="{{ route('product.showAddStock', $d->id) }}"
+                                                class="btn btn-fill btn-info">Tambah Stok</a>
                                             <a href="{{ route('product.edit', $d->id) }}"
                                                 class="btn btn-fill btn-info">Ubah</a>
                                             <form method="POST" action="{{ route('product.destroy', $d->id) }}">
