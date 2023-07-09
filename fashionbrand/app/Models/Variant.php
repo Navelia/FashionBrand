@@ -12,6 +12,6 @@ class Variant extends Model
         return $this->belongsTo(Product::class, 'product_id');
     }
     public function transactions(){
-        return $this->belongsToMany(Transaction::class, 'transactions_variants', 'transaction_id', 'variant_id')->withPivot('price', 'quantity', 'sub_total');
+        return $this->belongsToMany(Transaction::class, 'transactions_variants', 'variant_id', 'transaction_id')->withPivot('price', 'quantity', 'sub_total');
     }
 }

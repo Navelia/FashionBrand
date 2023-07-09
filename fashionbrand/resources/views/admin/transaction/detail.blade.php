@@ -33,7 +33,7 @@
                                 @foreach ($data->variants as $var)
                                     <tr>
                                         <td>{{ $var->product->name }}</td>
-                                        <td>{{ $var->dimension }}</td>
+                                        <td>{{ strtoupper($var->dimension) }}</td>
                                         <td>Rp{{ number_format($var->pivot->price, 2, ',', '.') }}</td>
                                         <td>{{ $var->pivot->quantity }}</td>
                                         <td>Rp{{ number_format($var->pivot->sub_total, 2, ',', '.') }}</td>
